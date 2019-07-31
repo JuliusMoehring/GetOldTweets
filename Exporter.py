@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys,getopt,datetime,codecs,os
-if sys.version_info[0] < 3:
-	import got
-else:
-	import got3 as got
+import got3 as got
 
 def main(argv):
 
@@ -22,7 +19,7 @@ def main(argv):
 		opts, args = getopt.getopt(argv, "", ("username=", "near=", "within=", "since=", "until=", "querysearch=", "toptweets", "maxtweets=", "output="))
 
 		tweetCriteria = got.manager.TweetCriteria()
-		outputFileName = "output_got.csv"
+		outputFileName = "tweets.csv"
 		path = '/Users/juliusmohring/desktop'
 
 		for opt,arg in opts:
@@ -58,13 +55,13 @@ def main(argv):
 				
 		outputFile = codecs.open(os.path.join(path, outputFileName), "w+", "utf-8")
 
-		outputFile.write('username;date;retweets;favorites;text;geo;mentions;hashtags;id;permalink')
+		outputFile.write('username∆date∆retweets∆favorites∆text∆geo∆mentions∆hashtags∆id∆permalink')
 
 		print('Searching...\n')
 
 		def receiveBuffer(tweets):
 			for t in tweets:
-				outputFile.write(('\n%s;%s;%d;%d;"%s";%s;%s;%s;"%s";%s' % (t.username, t.date.strftime("%Y-%m-%d %H:%M"), t.retweets, t.favorites, t.text, t.geo, t.mentions, t.hashtags, t.id, t.permalink)))
+				outputFile.write(('\n%s∆%s∆%d∆%d∆"%s"∆%s∆%s∆%s∆"%s"∆%s' % (t.username, t.date.strftime("%Y-%m-%d %H:%M"), t.retweets, t.favorites, t.text, t.geo, t.mentions, t.hashtags, t.id, t.permalink)))
 			outputFile.flush()
 			print('More %d saved on file...\n' % len(tweets))
 
