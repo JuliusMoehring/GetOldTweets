@@ -27,7 +27,7 @@ class TweetManager:
 			#Remove incomplete tweets withheld by Twitter Guidelines
 			scrapedTweets.remove('div.withheld-tweet')
 			tweets = scrapedTweets('div.js-stream-tweet')
-			
+
 			if len(tweets) == 0:
 				break
 			
@@ -35,7 +35,8 @@ class TweetManager:
 				tweetPQ = PyQuery(tweetHTML)
 				tweet = models.Tweet()
 				
-				usernameTweet = tweetPQ("span.username.js-action-profile-name b").text()
+				usernameTweet = str(tweetPQ.attr("data-permalink-path")).split('/')[1]
+				print(usernameTweet)
 				txt = re.sub(r"\s+", " ", tweetPQ("p.js-tweet-text").text().replace('# ', '#').replace('@ ', '@'))
 				retweets = int(tweetPQ("span.ProfileTweet-action--retweet span.ProfileTweet-actionCount").attr("data-tweet-stat-count").replace(",", ""))
 				favorites = int(tweetPQ("span.ProfileTweet-action--favorite span.ProfileTweet-actionCount").attr("data-tweet-stat-count").replace(",", ""))
@@ -43,7 +44,10 @@ class TweetManager:
 				id = tweetPQ.attr("data-tweet-id")
 				permalink = tweetPQ.attr("data-permalink-path")
 				user_id = int(tweetPQ("a.js-user-profile-link").attr("data-user-id"))
-				
+				emoji = str(tweetPQ('img.Emoji--forText').attr("title")).lower()
+				if emoji == 'none':
+					emoji = ''
+
 				geo = ''
 				geoSpan = tweetPQ('span.Tweet-geo')
 				if len(geoSpan) > 0:
@@ -58,7 +62,7 @@ class TweetManager:
 				tweet.permalink = 'https://twitter.com' + permalink
 				tweet.username = usernameTweet
 				
-				tweet.text = txt
+				tweet.text = txt + ' ' + emoji
 				tweet.date = datetime.datetime.fromtimestamp(dateSec)
 				tweet.formatted_date = datetime.datetime.fromtimestamp(dateSec).strftime("%a %b %d %X +0000 %Y")
 				tweet.retweets = retweets
@@ -68,7 +72,9 @@ class TweetManager:
 				tweet.geo = geo
 				tweet.urls = ",".join(urls)
 				tweet.author_id = user_id
-				
+				tweet.emoji = emoji
+
+
 				results.append(tweet)
 				resultsAux.append(tweet)
 				

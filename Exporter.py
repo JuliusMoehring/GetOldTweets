@@ -55,13 +55,13 @@ def main(argv):
 				
 		outputFile = codecs.open(os.path.join(path, outputFileName), "w+", "utf-8")
 
-		outputFile.write('username∆date∆retweets∆favorites∆text∆geo∆mentions∆hashtags∆id∆permalink')
+		outputFile.write('username∆date∆retweets∆favorites∆text∆geo∆mentions∆hashtags∆id∆permalink∆emoji')
 
 		print('Searching...\n')
 
 		def receiveBuffer(tweets):
 			for t in tweets:
-				outputFile.write(('\n%s∆%s∆%d∆%d∆"%s"∆%s∆%s∆%s∆"%s"∆%s' % (t.username, t.date.strftime("%Y-%m-%d"), t.retweets, t.favorites, t.text, t.geo, t.mentions, t.hashtags, t.id, t.permalink)))
+				outputFile.write(('\n%s∆%s∆%d∆%d∆"%s"∆%s∆%s∆%s∆"%s"∆%s∆%s' % (t.username, t.date.strftime("%Y-%m-%d"), t.retweets, t.favorites, t.text, t.geo, t.mentions, t.hashtags, t.id, t.permalink, t.emoji)))
 			outputFile.flush()
 			print('More %d saved on file...\n' % len(tweets))
 

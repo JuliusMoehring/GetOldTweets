@@ -1,8 +1,8 @@
 import sys
 if sys.version_info[0] < 3:
-    import got
+	import got
 else:
-    import got3 as got
+	import got3 as got
 
 def main():
 

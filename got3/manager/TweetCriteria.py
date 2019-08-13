@@ -28,5 +28,5 @@ class TweetCriteria:
 		return self
 
 	def setTopTweets(self, topTweets):
- 		self.topTweets = topTweets
- 		return self
+		self.topTweets = topTweets
+		return self
