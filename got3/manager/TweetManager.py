@@ -1,4 +1,4 @@
-import urllib.request, urllib.parse, urllib.error,urllib.request,urllib.error,urllib.parse,json,re,datetime,sys,http.cookiejar
+import urllib.request, urllib.parse, urllib.error,urllib.request,urllib.error,urllib.parse,json,re,datetime,sys,http.cookiejar, csv
 from .. import models
 from pyquery import PyQuery
 
@@ -24,7 +24,9 @@ class TweetManager:
 
 			refreshCursor = json['min_position']
 			scrapedTweets = PyQuery(json['items_html'])
+
 			#Remove incomplete tweets withheld by Twitter Guidelines
+
 			scrapedTweets.remove('div.withheld-tweet')
 			tweets = scrapedTweets('div.js-stream-tweet')
 
@@ -36,7 +38,6 @@ class TweetManager:
 				tweet = models.Tweet()
 				
 				usernameTweet = str(tweetPQ.attr("data-permalink-path")).split('/')[1]
-				print(usernameTweet)
 				txt = re.sub(r"\s+", " ", tweetPQ("p.js-tweet-text").text().replace('# ', '#').replace('@ ', '@'))
 				retweets = int(tweetPQ("span.ProfileTweet-action--retweet span.ProfileTweet-actionCount").attr("data-tweet-stat-count").replace(",", ""))
 				favorites = int(tweetPQ("span.ProfileTweet-action--favorite span.ProfileTweet-actionCount").attr("data-tweet-stat-count").replace(",", ""))
@@ -44,12 +45,24 @@ class TweetManager:
 				id = tweetPQ.attr("data-tweet-id")
 				permalink = tweetPQ.attr("data-permalink-path")
 				user_id = int(tweetPQ("a.js-user-profile-link").attr("data-user-id"))
-				emoji = str(tweetPQ('img.Emoji--forText').attr("title")).lower()
-				if emoji == 'none':
+				emojis = []
+				emoji_twitter = str(tweetPQ('img.Emoji--forText').attr("src"))
+				emoji = ''
+				if emoji_twitter != 'None':
+					emoji = emoji_twitter.split('/')[6].split('.')[0]
+					with open('emojis.csv') as emoji_file:
+						csv_reader = csv.reader(emoji_file, delimiter=';')
+						for row in csv_reader:
+							if emoji == str(row[2]):
+								emoji = row[0]
+								emoji_value = float(row[9])
+				else:
 					emoji = ''
+					emoji_value = float(0)
 
 				geo = ''
 				geoSpan = tweetPQ('span.Tweet-geo')
+
 				if len(geoSpan) > 0:
 					geo = geoSpan.attr('title')
 				urls = []
@@ -62,7 +75,7 @@ class TweetManager:
 				tweet.permalink = 'https://twitter.com' + permalink
 				tweet.username = usernameTweet
 				
-				tweet.text = txt + ' ' + emoji
+				tweet.text = txt
 				tweet.date = datetime.datetime.fromtimestamp(dateSec)
 				tweet.formatted_date = datetime.datetime.fromtimestamp(dateSec).strftime("%a %b %d %X +0000 %Y")
 				tweet.retweets = retweets
@@ -73,6 +86,7 @@ class TweetManager:
 				tweet.urls = ",".join(urls)
 				tweet.author_id = user_id
 				tweet.emoji = emoji
+				tweet.emoji_value = emoji_value
 
 
 				results.append(tweet)
