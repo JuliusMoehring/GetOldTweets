@@ -1,5 +1,7 @@
 # Get Old Tweets 
-A python script getting old Tweets via the Twitter API.
+A python script getting old Tweets via the Twitter API. 
+
+ONLY > PYTHON 3.7
 
 ## Components
 - **Tweet:** Model class to give some informations about a specific tweet.
