@@ -1,4 +1,4 @@
-import urllib.request, urllib.parse, urllib.error,urllib.request,urllib.error,urllib.parse,json,re,datetime,sys,http.cookiejar, csv
+import urllib.request, urllib.parse, urllib.error,urllib.request,urllib.error,urllib.parse,json,re,datetime,sys,http.cookiejar, csv, os
 from .. import models
 from pyquery import PyQuery
 
@@ -45,19 +45,17 @@ class TweetManager:
 				id = tweetPQ.attr("data-tweet-id")
 				permalink = tweetPQ.attr("data-permalink-path")
 				user_id = int(tweetPQ("a.js-user-profile-link").attr("data-user-id"))
-				emojis = []
 				emoji_twitter = str(tweetPQ('img.Emoji--forText').attr("src"))
 				emoji = ''
 				if emoji_twitter != 'None':
 					emoji = emoji_twitter.split('/')[6].split('.')[0]
-					with open('emojis.csv') as emoji_file:
+					with open(os.path.join(sys.path[0], 'emojis.csv')) as emoji_file:
 						csv_reader = csv.reader(emoji_file, delimiter=';')
 						for row in csv_reader:
 							if emoji == str(row[2]):
 								emoji = row[0]
 								emoji_value = float(row[9])
 				else:
-					emoji = ''
 					emoji_value = float(0)
 
 				geo = ''
