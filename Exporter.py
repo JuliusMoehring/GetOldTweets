@@ -20,7 +20,7 @@ def main(argv):
 
 		tweetCriteria = got.manager.TweetCriteria()
 		outputFileName = "tweets.csv"
-		path = '/Users/juliusmohring/desktop'
+		path = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')
 
 		for opt,arg in opts:
 			if opt == '--username':
