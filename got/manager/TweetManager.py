@@ -48,7 +48,7 @@ class TweetManager:
 				emoji_twitter = str(tweetPQ('img.Emoji--forText').attr("src"))
 				emoji = ''
 				if emoji_twitter != 'None':
-					emoji = emoji_twitter.split('/')[6].split('.')[0]
+					emoji = emoji_twitter.split('/')[6].split('.')[0][:5]
 					with open(os.path.join(sys.path[0], 'emojis.csv')) as emoji_file:
 						csv_reader = csv.reader(emoji_file, delimiter=';')
 						for row in csv_reader:
@@ -84,7 +84,10 @@ class TweetManager:
 				tweet.urls = ",".join(urls)
 				tweet.author_id = user_id
 				tweet.emoji = emoji
-				tweet.emoji_value = emoji_value
+				try:
+					tweet.emoji_value = emoji_value
+				except:
+					tweet.emoji_value = float(0)
 
 
 				results.append(tweet)
