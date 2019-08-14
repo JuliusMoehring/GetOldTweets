@@ -1,4 +1,4 @@
-import urllib.request, urllib.parse, urllib.error,urllib.request,urllib.error,urllib.parse,json,re,datetime,sys,http.cookiejar, csv, os
+import urllib.request, urllib.parse, urllib.error,json,re,datetime,sys,http.cookiejar, csv, os
 from .. import models
 from pyquery import PyQuery
 
