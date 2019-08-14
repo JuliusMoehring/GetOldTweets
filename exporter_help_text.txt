@@ -9,6 +9,8 @@ To use this script you can pass the following attributes:
    toptweets: Only the tweets provided as top tweets by Twitter (no parameters required)
       output: A filename to export the results (default is "output_got.csv")
 
+The querysearch attribute can be used with logic operators (AND, OR); If they are used, the since/ until attributes are not working. A patch fixing this issue is on its way
+
 Examples:
 # Example 1 - Get tweets by username [barackobama]
 python Exporter.py --username "barackobama" --maxtweets 1

@@ -1,17 +1,5 @@
-# Get Old Tweets Programatically
-A project written in Python to get old tweets, it bypass some limitations of Twitter Official API.
-
-## Details
-Twitter Official API has the bother limitation of time constraints, you can't get older tweets than a week. Some tools provide access to older tweets but in the most of them you have to spend some money before.
-I was searching other tools to do this job but I didn't found it, so after analyze how Twitter Search through browser works I understand its flow. Basically when you enter on Twitter page a scroll loader starts, if you scroll down you start to get more and more tweets, all through calls to a JSON provider. After mimic we get the best advantage of Twitter Search on browsers, it can search the deepest oldest tweets.
-
-## Prerequisites
-This package assumes using Python 2.x. The Python3 "got3" folder is maintained as experimental and is not officially supported.
-
-Expected package dependencies are listed in the "requirements.txt" file for PIP, you need to run the following command to get dependencies:
-```
-pip install -r requirements.txt
-```
+# Get Old Tweets 
+A python script getting old Tweets via the Twitter API.
 
 ## Components
 - **Tweet:** Model class to give some informations about a specific tweet.
@@ -24,6 +12,7 @@ pip install -r requirements.txt
   - favorites (int)
   - mentions (str)
   - hashtags (str)
+  - emojis (str)
   - geo (str)
 
 - **TweetManager:** A manager class to help getting tweets in **Tweet**'s model.
@@ -41,57 +30,4 @@ pip install -r requirements.txt
   
 - **Main:** Examples of how to use.
 
-- **Exporter:** Export tweets to a csv file named "output_got.csv".
-
-## Examples of python usage
-- Get tweets by username
-``` python
-	tweetCriteria = got.manager.TweetCriteria().setUsername('barackobama').setMaxTweets(1)
-	tweet = got.manager.TweetManager.getTweets(tweetCriteria)[0]
-	  
-    print tweet.text
-```    
-- Get tweets by query search
-``` python
-	tweetCriteria = got.manager.TweetCriteria().setQuerySearch('europe refugees').setSince("2015-05-01").setUntil("2015-09-30").setMaxTweets(1)
-	tweet = got.manager.TweetManager.getTweets(tweetCriteria)[0]
-	  
-    print tweet.text
-```    
-- Get tweets by username and bound dates
-``` python
-	tweetCriteria = got.manager.TweetCriteria().setUsername("barackobama").setSince("2015-09-10").setUntil("2015-09-12").setMaxTweets(1)
-	tweet = got.manager.TweetManager.getTweets(tweetCriteria)[0]
-	  
-    print tweet.text
-```
-- Get the last 10 top tweets by username
-``` python
-	tweetCriteria = got.manager.TweetCriteria().setUsername("barackobama").setTopTweets(True).setMaxTweets(10)
-	# first one
-	tweet = got.manager.TweetManager.getTweets(tweetCriteria)[0]
-	  
-    print tweet.text
-```
-
-## Examples of command-line usage
-- Get help use
-```
-    python Exporter.py -h
-``` 
-- Get tweets by username
-```
-    python Exporter.py --username "barackobama" --maxtweets 1
-```    
-- Get tweets by query search
-```
-    python Exporter.py --querysearch "europe refugees" --maxtweets 1
-```    
-- Get tweets by username and bound dates
-```
-    python Exporter.py --username "barackobama" --since 2015-09-10 --until 2015-09-12 --maxtweets 1
-```
-- Get the last 10 top tweets by username
-```
-    python Exporter.py --username "barackobama" --maxtweets 10 --toptweets
-```
+- **Exporter:** Export tweets to a csv file named "tweets.csv" and stores the file on Desktop
