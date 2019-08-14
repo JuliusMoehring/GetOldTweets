@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys,getopt,datetime,codecs,os
-import got3 as got
+import got
 
 def main(argv):
 

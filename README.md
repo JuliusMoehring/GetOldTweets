@@ -13,6 +13,7 @@ A python script getting old Tweets via the Twitter API.
   - mentions (str)
   - hashtags (str)
   - emojis (str)
+  - emoji_value
   - geo (str)
 
 - **TweetManager:** A manager class to help getting tweets in **Tweet**'s model.
@@ -30,4 +31,4 @@ A python script getting old Tweets via the Twitter API.
   
 - **Main:** Examples of how to use.
 
-- **Exporter:** Export tweets to a csv file named "tweets.csv" and stores the file on Desktop
+- **Exporter:** Export tweets to a csv file named "tweets.csv" (separated by "∆") and stores the file on Desktop
