@@ -65,14 +65,6 @@ class TweetManager:
                             emojis += emoji_dict[emoji]
                     else:
                         break
-                """
-                emoji = ''
-
-                if emoji_twitter != 'None':
-                    emoji = emoji_twitter.split('/')[6].split('.')[0][:5]
-                    if emoji in emoji_dict:
-                        emoji = emoji_dict[emoji]
-                """
 
                 geo = ''
                 geoSpan = tweetPQ('span.Tweet-geo')
