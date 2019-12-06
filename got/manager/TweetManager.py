@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import urllib.request, urllib.parse, urllib.error, json, re, datetime, sys, http.cookiejar, csv, os
 from .. import models
 from pyquery import PyQuery
@@ -12,6 +14,14 @@ class TweetManager:
     @staticmethod
     def getTweets(tweetCriteria, receiveBuffer=None, bufferLength=100, proxy=None):
         refreshCursor = ''
+
+        emoji_dict = {}
+
+        with open(os.path.join(sys.path[0], 'emojis.csv')) as emoji_file:
+            csv_reader = csv.reader(emoji_file, delimiter=';')
+            next(csv_reader)
+            for row in csv_reader:
+                emoji_dict[row[2]] = row[0]
 
         results = []
         resultsAux = []
@@ -46,18 +56,23 @@ class TweetManager:
                 id = tweetPQ.attr("data-tweet-id")
                 permalink = tweetPQ.attr("data-permalink-path")
                 user_id = int(tweetPQ("a.js-user-profile-link").attr("data-user-id"))
-                emoji_twitter = str(tweetPQ('img.Emoji--forText').attr("src"))
+                emojis = ''
+                for i in range(280):
+                    emoji_twitter = str(tweetPQ(f'img.Emoji--forText:eq({i})').attr("src"))
+                    if emoji_twitter != 'None':
+                        emoji = emoji_twitter.split('/')[6].split('.')[0][:5]
+                        if emoji in emoji_dict:
+                            emojis += emoji_dict[emoji]
+                    else:
+                        break
+                """
                 emoji = ''
+
                 if emoji_twitter != 'None':
                     emoji = emoji_twitter.split('/')[6].split('.')[0][:5]
-                    with open(os.path.join(sys.path[0], 'emojis.csv')) as emoji_file:
-                        csv_reader = csv.reader(emoji_file, delimiter=';')
-                        for row in csv_reader:
-                            if emoji == str(row[2]):
-                                emoji = row[0]
-                                emoji_value = float(row[9])
-                else:
-                    emoji_value = float(0)
+                    if emoji in emoji_dict:
+                        emoji = emoji_dict[emoji]
+                """
 
                 geo = ''
                 geoSpan = tweetPQ('span.Tweet-geo')
@@ -83,11 +98,7 @@ class TweetManager:
                 tweet.geo = geo
                 tweet.urls = ",".join(urls)
                 tweet.author_id = user_id
-                tweet.emoji = emoji
-                try:
-                    tweet.emoji_value = emoji_value
-                except:
-                    tweet.emoji_value = float(0)
+                tweet.emoji = emojis
 
                 results.append(tweet)
                 resultsAux.append(tweet)
